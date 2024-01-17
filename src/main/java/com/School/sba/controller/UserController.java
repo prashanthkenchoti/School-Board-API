@@ -24,6 +24,11 @@ public class UserController {
 	public ResponseEntity<ResponseStructure<UserResponseDTO>> register(@RequestBody UserRequestDTO userRequestDTO) {
 		return userService.register(userRequestDTO);
 	}
+	
+	@PostMapping("/users/{userId}/schools")
+	public ResponseEntity<ResponseStructure<UserResponseDTO>> createSchool(@PathVariable int userId) {
+		return userService.createSchool(userId);
+	}
 
 	@GetMapping("/users/{userId}")
 	public ResponseEntity<ResponseStructure<UserResponseDTO>> getUser(@PathVariable int userId) {

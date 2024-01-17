@@ -9,9 +9,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.School.sba.Enum.UserRole;
 import com.School.sba.Exception.SchoolNotFoundException;
+import com.School.sba.Exception.UserNotFoundException;
 import com.School.sba.Repository.SchoolReposiory;
+import com.School.sba.Repository.UserRepository;
 import com.School.sba.entity.School;
+import com.School.sba.entity.User;
 import com.School.sba.requestdto.SchoolRequestDTO;
 import com.School.sba.responsedto.SchoolResponseDTO;
 import com.School.sba.service.SchoolService;
@@ -21,7 +25,10 @@ import com.School.sba.utility.ResponseStructure;
 public class SchoolServiceImpl implements SchoolService {
 
 	@Autowired
-	SchoolReposiory schoolReposiory;
+	SchoolReposiory schoolRepository;
+	
+	@Autowired
+	UserRepository userRepository;
 	// method to convert SchoolRequestDTO type of object to School type of object
 	public School mapToSchool(SchoolRequestDTO  schoolRequsetDTO )
 	{
@@ -49,21 +56,24 @@ public class SchoolServiceImpl implements SchoolService {
 	
 	
 	@Override
-	public ResponseEntity<ResponseStructure<String>> addSchool(SchoolRequestDTO schoolRequestDTO) {
-
-		School school=mapToSchool(schoolRequestDTO);
-		schoolReposiory.save(school);
-		ResponseStructure<String> responseStructure = new ResponseStructure();
-		responseStructure.setStatusCode(HttpStatus.CREATED.value());
-		responseStructure.setMessage("school details registered successfully");
-		responseStructure.setData("school object added");
-		return new ResponseEntity<ResponseStructure<String>>(responseStructure,HttpStatus.CREATED);
-
+	public ResponseEntity<ResponseStructure<SchoolResponseDTO>> addSchool(SchoolRequestDTO schoolRequestDTO, int userId) {
+			User user= userRepository.findById(userId).orElseThrow(()-> new UserNotFoundException("User Not Found"));
+			
+			if(user.getUserRole().equals(UserRole.ADMIN))
+			{
+				School school=schoolRepository.save(mapToSchool(schoolRequestDTO));
+				ResponseStructure<SchoolResponseDTO> responseStructure = new ResponseStructure();
+				responseStructure.setStatusCode(HttpStatus.CREATED.value());
+				responseStructure.setMessage("school details registered successfully");
+				responseStructure.setData(mapToSchoolResponseDTO(school));
+				return new ResponseEntity<ResponseStructure<SchoolResponseDTO>>(responseStructure,HttpStatus.CREATED);
+		
+			}
+			else
+			{
+				throw new RuntimeException("UnAuthorised Access");
+			}
 	}
-	
-	
-	
-	
 	
 	
 
@@ -72,7 +82,7 @@ public class SchoolServiceImpl implements SchoolService {
 	// READ BY ID
 	@Override
 	public ResponseEntity<ResponseStructure<SchoolResponseDTO>> findSchoolById(int schoolId) {
-		School school=schoolReposiory.findById(schoolId)
+		School school=schoolRepository.findById(schoolId)
 				.orElseThrow(()->new SchoolNotFoundException("School NOt Found"));
 		SchoolResponseDTO schoolResponseDTO	=mapToSchoolResponseDTO(school);
 
@@ -87,7 +97,7 @@ public class SchoolServiceImpl implements SchoolService {
 	// READ BY NAME
 	@Override
 	public ResponseEntity<ResponseStructure<List<SchoolResponseDTO>>> findSchoolByName(String schoolName) {
-		List<School> schoolList=schoolReposiory.findSchoolByName(schoolName);
+		List<School> schoolList=schoolRepository.findSchoolByName(schoolName);
 		List<SchoolResponseDTO> schoolResponse= new ArrayList<>();
 		for (School school : schoolList) {
 			SchoolResponseDTO schoolResponseDTO	=mapToSchoolResponseDTO(school);
@@ -105,7 +115,7 @@ public class SchoolServiceImpl implements SchoolService {
 
 	@Override
 	public ResponseEntity<ResponseStructure<String>> updateSchoolById(School school, int schoolId) {
-		//		Optional<School> optionalSchool=schoolReposiory.findById(schoolId);
+		//		Optional<School> optionalSchool=schoolRepository.findById(schoolId);
 		//		
 		//		if(optionalSchool.isPresent())
 		//		{
@@ -132,7 +142,7 @@ public class SchoolServiceImpl implements SchoolService {
 		//		}
 		//		//+++++++++++++++++++++++++++++++++++++++OR+++++++++++++++++++++++++++++++++++++
 		//		//USING LAMBDA EXPRESSION
-		//		School school1=schoolReposiory.findById(schoolId).orElseThrow(()->new SchoolNotFoundException("School NOt Found"));
+		//		School school1=schoolRepository.findById(schoolId).orElseThrow(()->new SchoolNotFoundException("School NOt Found"));
 		//		school1.setSchoolName(school.getSchoolName());
 		//		school1.setContactNo(school.getContactNo());
 		//		school1.setEmailId(school.getEmailId());
@@ -145,15 +155,15 @@ public class SchoolServiceImpl implements SchoolService {
 
 		//+++++++++++++++++++++++++++++++++++++++OR+++++++++++++++++++++++++++++++++++++
 		//USING LAMBDA EXPRESSION and map(most feasible)
-		School school1=schoolReposiory.findById(schoolId)
-				.map( ex ->{
-					ex.setSchoolName(school.getSchoolName());
-					ex.setContactNo(school.getContactNo());
-					ex.setEmailId(school.getEmailId());
-					ex.setAddress(school.getAddress());
-					return schoolReposiory.save(ex);
-
-				}).orElseThrow(()->new SchoolNotFoundException("School NOt Found"));
+//		School school1=schoolRepository.findById(schoolId)
+//				.map( ex ->{
+//					ex.setSchoolName(school.getSchoolName());
+//					ex.setContactNo(school.getContactNo());
+//					ex.setEmailId(school.getEmailId());
+//					ex.setAddress(school.getAddress());
+//					return schoolReposiory.save(ex);
+//
+//				}).orElseThrow(()->new SchoolNotFoundException("School NOt Found"));
 
 		ResponseStructure<String> responseStructure = new ResponseStructure();
 		responseStructure.setStatusCode(HttpStatus.OK.value());
@@ -168,9 +178,9 @@ public class SchoolServiceImpl implements SchoolService {
 	@Override
 	public ResponseEntity<ResponseStructure<String>> deleteSchoolById(int schoolId) {
 
-		School School=schoolReposiory.findById(schoolId)
+		School School=schoolRepository.findById(schoolId)
 				.orElseThrow(()->new SchoolNotFoundException("School Not Found"));
-					schoolReposiory.deleteById(schoolId);
+		schoolRepository.deleteById(schoolId);
 
 					ResponseStructure<String> responseStructure = new ResponseStructure();
 					responseStructure.setStatusCode(HttpStatus.OK.value());

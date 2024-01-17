@@ -58,17 +58,10 @@ public class UserServiceImpl implements UserService  {
 		User user = mapToUser(userRequestDTO);
 		
 		try {
-			if(user.getUserRole()==UserRole.ADMIN)
-			{
-				if(user.getUserRole()!=UserRole.STUDENT && user.getUserRole()!=UserRole.TEACHER)
-				{
 					user = userRepository.save(user);
-				}
 			}
-				
-			
-		} 
-		catch (Exception ex)
+ 
+		catch(Exception ex)
 		{
 			throw new ConstraintVoilationException(HttpStatus.BAD_REQUEST.value(),"Duplicate entries Detected","please Use Unique entry ");
 		}
@@ -79,6 +72,19 @@ public class UserServiceImpl implements UserService  {
 		responseStructure.setData(mapToUserResponse(user));
 		return new ResponseEntity<ResponseStructure<UserResponseDTO>>(responseStructure, HttpStatus.CREATED);
 	}
+	
+	
+	@Override
+	public ResponseEntity<ResponseStructure<UserResponseDTO>> createSchool(int userId) {
+		User user=userRepository.findById(userId).orElseThrow(()-> new UserNotFoundException("User Not Found"));
+		if(user.getUserRole()==Userty)
+		return null;
+	}
+	
+	
+	
+	
+	
 
 	
 	
@@ -125,6 +131,7 @@ public class UserServiceImpl implements UserService  {
 		}
 			
 		}
+
 			
 		
 	}

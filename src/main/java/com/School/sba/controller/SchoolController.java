@@ -29,10 +29,10 @@ public class SchoolController {
 	
 	// INSERT OPERATION
 	
-	@PostMapping("/schools")
-	public ResponseEntity<ResponseStructure<String>> addSchool(@RequestBody @Valid SchoolRequestDTO schoolRequestDTO)
+	@PostMapping("/users/{userId}/schools")
+	public ResponseEntity<ResponseStructure<SchoolResponseDTO>> addSchool(@RequestBody @Valid SchoolRequestDTO schoolRequestDTO,@PathVariable int userId)
 	{
-		return schoolService.addSchool(schoolRequestDTO);
+		return schoolService.addSchool(schoolRequestDTO,userId);
 	}
 	
 	// READ OPERATION

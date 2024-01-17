@@ -51,12 +51,17 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
 		 return responseStructure(HttpStatus.NOT_FOUND, ex.getMessage(), "School Not Found With Given Id");
 	}
 	
-	
+	@org.springframework.web.bind.annotation.ExceptionHandler(UserNotFoundException.class)
 	public ResponseEntity<Object> userNotFound(UserNotFoundException userNotFoundException )
 	{
 		return responseStructure(HttpStatus.NOT_FOUND,userNotFoundException.getMessage(),"User Not Found With Given Id");
 	}
 	
+	@org.springframework.web.bind.annotation.ExceptionHandler(UserNotFoundException.class)
+	public ResponseEntity<Object> scheduleExists(ScheduleExistsException ScheduleExistsException )
+	{
+		return responseStructure(HttpStatus.IM_USED,ScheduleExistsException.getMessage(),"already School Has A Schedule");
+	}
 	
 
 }

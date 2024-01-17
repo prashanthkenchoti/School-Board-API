@@ -11,7 +11,7 @@ import com.School.sba.utility.ResponseStructure;
 
 public interface SchoolService {
 
-	ResponseEntity<ResponseStructure<String>> addSchool(SchoolRequestDTO schoolRequestDTO);
+	ResponseEntity<ResponseStructure<SchoolResponseDTO>> addSchool(SchoolRequestDTO schoolRequestDTO, int userId);
 
 	ResponseEntity<ResponseStructure<SchoolResponseDTO>> findSchoolById(int schoolId);
 
