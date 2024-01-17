@@ -2,43 +2,39 @@ package com.School.sba.entity;
 
 import java.util.List;
 
-import com.School.sba.Enum.UserRole;
+import org.hibernate.annotations.GeneratorType;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
-	
+@Builder
+public class AcademicProgram {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int userId;
-	@Column(unique = true)
-	private String userName;
-	private String password;
-	private String firstName;
-	private String lastName;
-	private long contactNo;
-	@Column(unique = true)
-	private String email;
-	private UserRole userRole;
-	private boolean isDeleted=false;
+	private int programId;
+	private String programName;
+	private int beginsAt;
+	private int endsAt;
 	
-
-	private School school; 
+	@ManyToOne
+	private School school;
 	
 	@ManyToMany
-	private List<AcademicProgram> academicProgramList;
+	private List<User> UserList;
+
 }

@@ -2,6 +2,7 @@ package com.School.sba.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,10 +27,16 @@ public class ScheduleController {
 	}
 	
 	
-	@PostMapping("/schools/{schoolId}/schedules")
+	@GetMapping("/schools/{schoolId}/schedules")
 	public ResponseEntity<ResponseStructure<ScheduleResponseDTO>> findSchedule(@PathVariable int schoolId)
 	{
-		return ScheduleRequestDTO.createSchedule(schoolId);
+		return ScheduleRequestDTO.findSchedule(schoolId);
+	}
+	
+	@GetMapping("/schedules/{scheduleId}")
+	public ResponseEntity<ResponseStructure<ScheduleResponseDTO>> updateSchedule(@RequestBody ScheduleRequestDTO scheduleRequestDTO,@PathVariable int scheduleId)
+	{
+		return ScheduleRequestDTO.updateSchedule(scheduleRequestDTO,scheduleId);
 	}
 
 }

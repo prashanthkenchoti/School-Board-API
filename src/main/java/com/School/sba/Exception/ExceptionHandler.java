@@ -21,11 +21,11 @@ import com.School.sba.utility.ResponseStructure;
 
 @RestControllerAdvice
 public class ExceptionHandler extends ResponseEntityExceptionHandler {
-	
+
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-		
+
 		List<ObjectError> allErrors=ex.getAllErrors();
 		Map<String, String> errors= new HashMap<String,String>();
 		allErrors.forEach(error ->{
@@ -34,7 +34,7 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
 		});
 		return responseStructure(HttpStatus.BAD_REQUEST,ex.getMessage(),errors );
 	}
-	
+
 	private ResponseEntity<Object> responseStructure(HttpStatus status,String message,Object rootCause)
 	{
 		return new ResponseEntity<Object>(Map.of(
@@ -43,25 +43,31 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
 				"rootcause",rootCause
 				),status);
 	}
-	
+
 	@org.springframework.web.bind.annotation.ExceptionHandler(SchoolNotFoundException.class)
 	public ResponseEntity<Object> schoolNotFound(SchoolNotFoundException ex)
 	{
-		
-		 return responseStructure(HttpStatus.NOT_FOUND, ex.getMessage(), "School Not Found With Given Id");
+
+		return responseStructure(HttpStatus.NOT_FOUND, ex.getMessage(), "School Not Found With Given Id");
 	}
-	
+
 	@org.springframework.web.bind.annotation.ExceptionHandler(UserNotFoundException.class)
 	public ResponseEntity<Object> userNotFound(UserNotFoundException userNotFoundException )
 	{
 		return responseStructure(HttpStatus.NOT_FOUND,userNotFoundException.getMessage(),"User Not Found With Given Id");
 	}
-	
-	@org.springframework.web.bind.annotation.ExceptionHandler(UserNotFoundException.class)
+
+	@org.springframework.web.bind.annotation.ExceptionHandler(ScheduleExistsException.class)
 	public ResponseEntity<Object> scheduleExists(ScheduleExistsException ScheduleExistsException )
 	{
 		return responseStructure(HttpStatus.IM_USED,ScheduleExistsException.getMessage(),"already School Has A Schedule");
 	}
-	
+
+	@org.springframework.web.bind.annotation.ExceptionHandler(ScheduleNotFoundException.class)
+	public ResponseEntity<Object> scheduleNotFound(ScheduleNotFoundException sheduleNotFoundException )
+	{
+		return responseStructure(HttpStatus.NO_CONTENT,sheduleNotFoundException.getMessage(),"the Schoo Does Not Have Any Associated Schedules With it");
+	}
+
 
 }

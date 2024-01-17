@@ -74,13 +74,6 @@ public class UserServiceImpl implements UserService  {
 	}
 	
 	
-	@Override
-	public ResponseEntity<ResponseStructure<UserResponseDTO>> createSchool(int userId) {
-		User user=userRepository.findById(userId).orElseThrow(()-> new UserNotFoundException("User Not Found"));
-		if(user.getUserRole()==Userty)
-		return null;
-	}
-	
 	
 	
 	

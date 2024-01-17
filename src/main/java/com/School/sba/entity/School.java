@@ -33,11 +33,14 @@ public class School {
 	//@OneToOne(mappedBy = "school")
 	//private Schedule schedule;
 	
-	@ManyToOne
+	
 	private List<User> userlist;
 	
 	@OneToOne
 	private Schedule schedule;
+	
+	@ManyToOne
+	private List<AcademicProgram> programList;
 	
 	
 	

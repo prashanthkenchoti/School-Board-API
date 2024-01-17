@@ -10,4 +10,8 @@ public interface ScheduleService {
 
 	ResponseEntity<ResponseStructure<ScheduleResponseDTO>> createSchedule(ScheduleRequestDTO scheduleRequestDTO, int schoolId);
 
+	ResponseEntity<ResponseStructure<ScheduleResponseDTO>> findSchedule(int schoolId);
+
+	ResponseEntity<ResponseStructure<ScheduleResponseDTO>> updateSchedule(ScheduleRequestDTO scheduleRequestDTO, int scheduleId);
+
 }

@@ -14,6 +14,5 @@ public interface UserService {
 
 	ResponseEntity<ResponseStructure<UserResponseDTO>> deleteUser(int userId);
 
-	ResponseEntity<ResponseStructure<UserResponseDTO>> createSchool(int userId);
 
 }

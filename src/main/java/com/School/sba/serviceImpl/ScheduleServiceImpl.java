@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.School.sba.Exception.ScheduleExistsException;
+import com.School.sba.Exception.ScheduleNotFoundException;
 import com.School.sba.Exception.SchoolNotFoundException;
 import com.School.sba.Exception.UserNotFoundException;
 import com.School.sba.Repository.ScheduleRepository;
@@ -88,9 +89,47 @@ public class ScheduleServiceImpl implements ScheduleService {
 			}
 		}).orElseThrow(()-> new SchoolNotFoundException("No such school Exists") );
 
+	}
+
+	//================================================================================================================================
+
+	@Override
+	public ResponseEntity<ResponseStructure<ScheduleResponseDTO>> findSchedule(int schoolId) {
+		return schoolReposiory.findById(schoolId).map(u ->{
+			if(u.getSchedule()!=null)
+			{
+				Schedule schedule=u.getSchedule();
+				responseStructure.setStatusCode(HttpStatus.FOUND.value());
+				responseStructure.setMessage("Schedule Accessed successfully");
+				responseStructure.setData(mapToScheduleResponseDTO(schedule));
+				return new ResponseEntity<ResponseStructure<ScheduleResponseDTO>>(responseStructure,HttpStatus.FOUND);
+
+
+			}
+			else {
+				throw new ScheduleNotFoundException("Schedule Does Not Existed");
+
+			}
+
+		}).orElseThrow(()-> new SchoolNotFoundException("School Does not Exist"));
 
 	}
 
+	//================================================================================================================================
 
+	@Override
+	public ResponseEntity<ResponseStructure<ScheduleResponseDTO>> updateSchedule(ScheduleRequestDTO scheduleRequestDTO ,int scheduleId) {
+		scheduleRepository.findById(scheduleId).map(m ->{
+			Schedule schedule=mapToSchedule(scheduleRequestDTO);
+			scheduleRepository.save(schedule);
+			responseStructure.setStatusCode(HttpStatus.FOUND.value());
+			responseStructure.setMessage("Schedule updated successfully");
+			responseStructure.setData(mapToScheduleResponseDTO(schedule));
+			return new ResponseEntity<ResponseStructure<ScheduleResponseDTO>>(responseStructure,HttpStatus.FOUND);
+
+		}).orElseThrow(()-> new ScheduleNotFoundException());
+
+		return null;
+	}
 
 }
