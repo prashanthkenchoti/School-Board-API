@@ -1,6 +1,6 @@
 package com.School.sba.utility;
 
-import org.modelmapper.ModelMapper;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -46,9 +46,5 @@ public class ApplicationDocumentation {
 		return new OpenAPI().info(info());
 	}
 	
-	 ModelMapper  getModelMapper() {
-		return new ModelMapper();
-
-	}
-
+	
 }

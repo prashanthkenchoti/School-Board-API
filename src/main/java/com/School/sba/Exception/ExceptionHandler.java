@@ -50,5 +50,13 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
 		
 		 return responseStructure(HttpStatus.NOT_FOUND, ex.getMessage(), "School Not Found With Given Id");
 	}
+	
+	
+	public ResponseEntity<Object> userNotFound(UserNotFoundException userNotFoundException )
+	{
+		return responseStructure(HttpStatus.NOT_FOUND,userNotFoundException.getMessage(),"User Not Found With Given Id");
+	}
+	
+	
 
 }
