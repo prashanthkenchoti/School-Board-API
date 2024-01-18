@@ -36,9 +36,6 @@ public class User {
 	private UserRole userRole;
 	private boolean isDeleted=false;
 	
-
+	@ManyToOne
 	private School school; 
-	
-	@ManyToMany
-	private List<AcademicProgram> academicProgramList;
 }

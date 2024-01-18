@@ -30,16 +30,10 @@ public class School {
 	private String emailId;
 	private  String address;
 	
-	//@OneToOne(mappedBy = "school")
-	//private Schedule schedule;
-	
-	
-	private List<User> userlist;
-	
 	@OneToOne
 	private Schedule schedule;
 	
-	@ManyToOne
+	@OneToMany(mappedBy = "school")
 	private List<AcademicProgram> programList;
 	
 	

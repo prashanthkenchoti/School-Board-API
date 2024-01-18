@@ -66,8 +66,13 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
 	@org.springframework.web.bind.annotation.ExceptionHandler(ScheduleNotFoundException.class)
 	public ResponseEntity<Object> scheduleNotFound(ScheduleNotFoundException sheduleNotFoundException )
 	{
-		return responseStructure(HttpStatus.NO_CONTENT,sheduleNotFoundException.getMessage(),"the Schoo Does Not Have Any Associated Schedules With it");
+		return responseStructure(HttpStatus.NO_CONTENT,sheduleNotFoundException.getMessage(),"the School Does Not Have Any Associated Schedules With it");
 	}
 
+	@org.springframework.web.bind.annotation.ExceptionHandler(AcademicProgramNotFoundException.class)
+	public ResponseEntity<Object> AcademicProgramNotFound(AcademicProgramNotFoundException academicProgramNotFoundException )
+	{
+		return responseStructure(HttpStatus.NO_CONTENT,academicProgramNotFoundException.getMessage(),"the Program with Id is Not Found");
+	}
 
 }

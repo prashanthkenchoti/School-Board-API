@@ -119,7 +119,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
 	@Override
 	public ResponseEntity<ResponseStructure<ScheduleResponseDTO>> updateSchedule(ScheduleRequestDTO scheduleRequestDTO ,int scheduleId) {
-		scheduleRepository.findById(scheduleId).map(m ->{
+		return scheduleRepository.findById(scheduleId).map(m ->{
 			Schedule schedule=mapToSchedule(scheduleRequestDTO);
 			scheduleRepository.save(schedule);
 			responseStructure.setStatusCode(HttpStatus.FOUND.value());
@@ -129,7 +129,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
 		}).orElseThrow(()-> new ScheduleNotFoundException());
 
-		return null;
+		
 	}
 
 }
