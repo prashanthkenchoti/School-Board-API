@@ -29,5 +29,10 @@ public class SubjectController {
 
 	}
 	
-	
+	@PostMapping("/academic-programs/{programId}")
+	public ResponseEntity<ResponseStructure<AcademicProgramResponseDTO>> updateSubjects(@RequestBody SubjectRequestDTO subjectRequestDTO, int programId )
+	{
+		return subjectService.updateSubjects(subjectRequestDTO,programId);
+
+	}
 }

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.School.sba.requestdto.AcademicProgramRequestDTO;
@@ -34,5 +35,11 @@ public class AcademicProgramController {
 	{
 		return academicProgramService.findAllAcademicPrograms(schoolId);
 	}
-
+	
+	
+	@PutMapping("/academic-programs/{programId}/users/{userId}")
+	public ResponseEntity<ResponseStructure<String>> addTeacherAndStudentAP( @PathVariable int programId, @PathVariable int userId)
+	{
+		return academicProgramService.addTeacherAndStudentAP(programId,userId);
+	}
 }

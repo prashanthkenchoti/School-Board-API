@@ -13,6 +13,6 @@ import com.School.sba.requestdto.SubjectRequestDTO;
 public interface SubjectRepository extends JpaRepository<Subject, Integer> {
 	
 	@Query("select s from Subject s where s.subjectName LIKE %?1%")
-	Subject findSubjectByName(String subjectRequestDTO);
+	Optional<Subject> findSubjectByName(String subjectRequestDTO);
 
 }

@@ -20,9 +20,9 @@ public class UserController {
 	@Autowired
 	UserService userService;
 	
-	@PostMapping("/user/register")
-	public ResponseEntity<ResponseStructure<UserResponseDTO>> register(@RequestBody UserRequestDTO userRequestDTO) {
-		return userService.register(userRequestDTO);
+	@PostMapping("/user/{userId}/register")
+	public ResponseEntity<ResponseStructure<UserResponseDTO>> register(@RequestBody UserRequestDTO userRequestDTO, @PathVariable int userId) {
+		return userService.register(userRequestDTO,userId);
 	}
 
 	@GetMapping("/users/{userId}")

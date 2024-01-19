@@ -75,4 +75,9 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
 		return responseStructure(HttpStatus.NO_CONTENT,academicProgramNotFoundException.getMessage(),"the Program with Id is Not Found");
 	}
 
+	@org.springframework.web.bind.annotation.ExceptionHandler(UnAuthorisedAccessException.class)
+	public ResponseEntity<Object> unAuthorisedAccess(UnAuthorisedAccessException unAuthorisedAccessException )
+	{
+		return responseStructure(HttpStatus.NOT_FOUND,unAuthorisedAccessException.getMessage(),"User Not Allowed To Perform This Operation");
+	}
 }

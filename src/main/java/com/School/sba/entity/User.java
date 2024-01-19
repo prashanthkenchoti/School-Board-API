@@ -38,4 +38,7 @@ public class User {
 	
 	@ManyToOne
 	private School school; 
+	
+	@ManyToMany(mappedBy = "userList")
+	private List<AcademicProgram> academicProgramList;
 }

@@ -1,5 +1,6 @@
 package com.School.sba.entity;
 
+import java.time.LocalTime;
 import java.util.List;
 
 import org.hibernate.annotations.GeneratorType;
@@ -28,14 +29,17 @@ public class AcademicProgram {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int programId;
 	private String programName;
-	private int beginsAt;
-	private int endsAt;
+	private LocalTime beginsAt;
+	private LocalTime endsAt;
 	
 	@ManyToOne
 	private School school;
 	
 	@ManyToMany
 	private List<Subject> subjectList;
+	
+	@ManyToMany(mappedBy = "academicProgramList")
+	private List<User> userList;
 	
 
 

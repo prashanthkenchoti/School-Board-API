@@ -38,20 +38,7 @@ public class SubjectServiceImpl implements SubjectService {
 
 
 	
-	private Subject mapToSubject( SubjectRequestDTO subjectRequestDTO)
-	{
-		return Subject.builder()
-				.subjectNames(subjectRequestDTO.getSubjectName())
-				.build();
-	}
-		
-	private SubjectResponseDTO mapToSubjectResponseDTO(Subject subject  )
-	{
-		return SubjectResponseDTO.builder()
-				.subjectId(subject.getSubjectId())
-				.subjectName(subject.getSubjectNames())
-				.build();
-	}
+	
 
 	
 		@Override
@@ -59,12 +46,12 @@ public class SubjectServiceImpl implements SubjectService {
 				int programId) {
 			return academicProgramRepository.findById(programId).map(program -> {
 				List<Subject> subjects=new ArrayList<>();
-				subjectRequestDTO.getSubjectName().forEach(name ->{
+				subjectRequestDTO.getSubjectNames().forEach(name ->{
 				Subject subject =	subjectRepository.findSubjectByName(name).map(s -> s) 
 						.orElseGet(() -> {
 						Subject sub = new Subject();
 						sub.setSubjectName(name);
-						subjectRepo.save(subject);
+						subjectRepository.save(sub);
 						subjects.add(sub);
 						return sub;
 						});
@@ -81,7 +68,9 @@ public class SubjectServiceImpl implements SubjectService {
 			
 			
 		}
-		}
+
+		
+	}
 
 
 				

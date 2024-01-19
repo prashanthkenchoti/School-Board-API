@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService  {
 	
 
 
-	private User mapToUser(UserRequestDTO userRequestDTO) {
+	public User mapToUser(UserRequestDTO userRequestDTO) {
 		return User.builder()
 				.userName(userRequestDTO.getUserName())
 				.password(userRequestDTO.getPassword())
@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService  {
 				.build();
 	}
 
-	private UserResponseDTO mapToUserResponse(User user) {
+	public UserResponseDTO mapToUserResponse(User user) {
 		return UserResponseDTO.builder()
 				.userId(user.getUserId())
 				.userName(user.getUserName())
@@ -54,9 +54,11 @@ public class UserServiceImpl implements UserService  {
 	}
 
 	@Override
-	public ResponseEntity<ResponseStructure<UserResponseDTO>> register(UserRequestDTO userRequestDTO) {
-		User user = mapToUser(userRequestDTO);
-		
+	public ResponseEntity<ResponseStructure<UserResponseDTO>> register(UserRequestDTO userRequestDTO,int userId) {
+	User  user = mapToUser(userRequestDTO);
+		if(user.getUserRole().equals(UserRole.ADMIN))
+		{
+			
 		try {
 					user = userRepository.save(user);
 			}
@@ -66,7 +68,7 @@ public class UserServiceImpl implements UserService  {
 			throw new ConstraintVoilationException(HttpStatus.BAD_REQUEST.value(),"Duplicate entries Detected","please Use Unique entry ");
 		}
 	
-		 
+	}
 		responseStructure.setStatusCode(HttpStatus.CREATED.value());
 		responseStructure.setMessage("User Registered Successfully");
 		responseStructure.setData(mapToUserResponse(user));

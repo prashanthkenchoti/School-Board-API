@@ -1,8 +1,8 @@
 package com.School.sba.serviceImpl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,18 +10,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.School.sba.Enum.UserRole;
+import com.School.sba.Exception.AcademicProgramNotFoundException;
 import com.School.sba.Exception.SchoolNotFoundException;
+import com.School.sba.Exception.UnAuthorisedAccessException;
+import com.School.sba.Exception.UserNotFoundException;
 import com.School.sba.Repository.AcademicProgramRepository;
 import com.School.sba.Repository.SchoolReposiory;
+import com.School.sba.Repository.UserRepository;
 import com.School.sba.entity.AcademicProgram;
-import com.School.sba.entity.School;
+import com.School.sba.entity.Subject;
+import com.School.sba.entity.User;
 import com.School.sba.requestdto.AcademicProgramRequestDTO;
 import com.School.sba.responsedto.AcademicProgramResponseDTO;
-import com.School.sba.responsedto.ScheduleResponseDTO;
 import com.School.sba.service.AcademicProgramService;
 import com.School.sba.utility.ResponseStructure;
-
-import lombok.Builder;
 
 @Service
 public class AcademicProgramServiceImpl implements AcademicProgramService {
@@ -34,9 +36,21 @@ public class AcademicProgramServiceImpl implements AcademicProgramService {
 
 	@Autowired
 	ResponseStructure<AcademicProgramResponseDTO> responseStructure;
+	
+	@Autowired
+	ResponseStructure<String> ResponseStructure;
 
 	@Autowired
 	ResponseStructure<List<AcademicProgramResponseDTO>> academicProgramResponseList;
+	
+	@Autowired
+	UserServiceImpl userServiceImpl;
+	
+	@Autowired
+	private User user;
+	
+	@Autowired
+	UserRepository userRepository;
 
 	private AcademicProgram mapToAcademicProgram(AcademicProgramRequestDTO academicProgramRequestDTO) {
 		return AcademicProgram.builder().programName(academicProgramRequestDTO.getProgramName())
@@ -45,9 +59,20 @@ public class AcademicProgramServiceImpl implements AcademicProgramService {
 	}
 
 	public AcademicProgramResponseDTO maptoAcademicProgramResponseDTO(AcademicProgram academicProgram) {
-		return AcademicProgramResponseDTO.builder().programId(academicProgram.getProgramId())
-				.programName(academicProgram.getProgramName()).beginsAt(academicProgram.getBeginsAt())
-				.endsAt(academicProgram.getEndsAt()).build();
+		
+		List<String> subjectNames = new ArrayList<>();
+		academicProgram.getSubjectList().forEach(subject ->{
+			subjectNames.add(subject.getSubjectName());
+			
+		});
+		
+		return AcademicProgramResponseDTO.builder()
+				.programId(academicProgram.getProgramId())
+				.programName(academicProgram.getProgramName())
+				.beginsAt(academicProgram.getBeginsAt())
+				.endsAt(academicProgram.getEndsAt())
+				.subjectList(subjectNames)
+				.build();
 	}
 
 	@Override
@@ -91,4 +116,28 @@ public class AcademicProgramServiceImpl implements AcademicProgramService {
 
 	}
 
+//================================================================================================================================	
+
+	@Override
+	public ResponseEntity<ResponseStructure<String>> addTeacherAndStudentAP(int programId,
+			int userId) {
+	User newUser =	userRepository.findById(userId).orElseThrow(()-> new UserNotFoundException("user not Found"));
+	 AcademicProgram program =	academicProgramRepository.findById(programId).orElseThrow(() -> new AcademicProgramNotFoundException("program does not Exist"));
+			if(!user.getUserRole().equals(UserRole.ADMIN))
+			{
+				program.getUserList().add(newUser);	
+				academicProgramRepository.save(program);
+				ResponseStructure.setStatusCode(HttpStatus.OK.value());
+				ResponseStructure.setMessage("Student and Teachers Added Successfully");
+				ResponseStructure.setData("Student and Teachers Saved Successfully");
+				return new ResponseEntity<ResponseStructure<String>>(ResponseStructure,
+						HttpStatus.OK);
+			}
+			else
+			{
+				throw new UnAuthorisedAccessException("User Not Allowed");
+			}
+	}
+	
+	
 }

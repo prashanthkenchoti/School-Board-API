@@ -13,6 +13,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class SubjectRequestDTO {
 	
-	private List<String> subjectName;
+	private List<String> subjectNames;
 
 }

@@ -8,7 +8,7 @@ import com.School.sba.utility.ResponseStructure;
 
 public interface UserService {
 
-	ResponseEntity<ResponseStructure<UserResponseDTO>> register(UserRequestDTO userRequestDTO);
+	ResponseEntity<ResponseStructure<UserResponseDTO>> register(UserRequestDTO userRequestDTO, int userId);
 
 	ResponseEntity<ResponseStructure<UserResponseDTO>> getUser(int userId);
 
