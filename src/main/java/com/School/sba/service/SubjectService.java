@@ -18,5 +18,9 @@ public interface SubjectService {
 	ResponseEntity<ResponseStructure<AcademicProgramResponseDTO>> updateSubjects(SubjectRequestDTO subjectRequestDTO,
 			int programId);
 
+	ResponseEntity<ResponseStructure<List<SubjectResponseDTO>>> findAllSubjects();
+
+	ResponseEntity<ResponseStructure<String>> addSubjectTOTeacher(int subjectId, int userId);
+
 	
 }

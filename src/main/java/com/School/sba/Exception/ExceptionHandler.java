@@ -80,4 +80,10 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
 	{
 		return responseStructure(HttpStatus.NOT_FOUND,unAuthorisedAccessException.getMessage(),"User Not Allowed To Perform This Operation");
 	}
+	
+	@org.springframework.web.bind.annotation.ExceptionHandler(SubjectNotFoundException.class)
+	public ResponseEntity<Object> subjectNotFound(SubjectNotFoundException subjectNotFoundException )
+	{
+		return responseStructure(HttpStatus.NOT_FOUND,subjectNotFoundException.getMessage(),"No Subjects Are Found ");
+	}
 }
