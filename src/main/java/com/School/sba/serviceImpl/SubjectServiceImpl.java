@@ -52,17 +52,14 @@ public class SubjectServiceImpl implements SubjectService {
     
     @Autowired
     private UserRepository userRepository;
-
-
-	private SubjectResponseDTO  mapToSubjectResponseDTO(Subject subject)
-	{
-		return new SubjectResponseDTO().builder()
-				.subjectId(subject.getSubjectId())
-
-				.subjectName(subject.getSubjectName())
-				.build();
-	}
-
+    
+    private SubjectResponseDTO mapToSubjectResponseDTO(Subject subject)
+    {
+    	return SubjectResponseDTO.builder()
+    			.subjectId(subject.getSubjectId())
+    			.subjectName(subject.getSubjectName())
+    			.build();
+    }
 
 
 	@Override
@@ -138,8 +135,11 @@ public class SubjectServiceImpl implements SubjectService {
 			int userId) {
 		User user= userRepository.findById(userId).orElseThrow(()-> new UserNotFoundException("User Not Found"));
 		Subject subject = subjectRepository.findById(subjectId).orElseThrow(() -> new SubjectNotFoundException("Subject Not Exixt"));
+
 			if(user.getUserRole().equals(UserRole.TEACHER))
 			{
+				if(subject.getSubjectName().equals(subject))
+				{
 				subject.getUser().add(user);
 				subjectRepository.save(subject);
 				structure.setStatusCode(HttpStatus.OK.value());
@@ -147,9 +147,14 @@ public class SubjectServiceImpl implements SubjectService {
 				structure.setData("subject is assigned to the given userId ");
 				return new ResponseEntity<ResponseStructure<String>>(structure,HttpStatus.OK);
 			}
+				else
+				{
+					throw new UnAuthorisedAccessException("User can Not Be Assigned With Subject");
+				}
+			}
 			else
 			{
-				throw new UnAuthorisedAccessException("User can Not Be Assigned With Subject");
+				throw new UnAuthorisedAccessException("User Not Allowed");
 			}
 		
 				

@@ -2,6 +2,7 @@ package com.School.sba.requestdto;
 
 import java.sql.Time;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import lombok.AllArgsConstructor;
@@ -17,13 +18,13 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ScheduleRequestDTO {
 	
-	private LocalTime opensAt;
-	private LocalTime closesAt;
+	private LocalDateTime opensAt;
+	private LocalDateTime closesAt;
 	private int classHoursPerDay;
 	private int classHourLengthInMinute;
-	private LocalTime breakTime;
+	private LocalDateTime breakTime;
 	private int breakLengthInMinute;
-	private LocalTime lunchTime;
+	private LocalDateTime lunchTime;
 	private int lunchLengthInMinute;
 	
 

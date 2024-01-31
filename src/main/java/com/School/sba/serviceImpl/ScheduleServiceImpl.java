@@ -131,5 +131,15 @@ public class ScheduleServiceImpl implements ScheduleService {
 
 		
 	}
+	
+	//===============================================================================================================================
+	
+	public ResponseEntity<ResponseStructure<ScheduleResponseDTO>> deleteSchedule(Schedule schedule)
+	{
+		int scheduleId=schedule.getScheduleId();
+		scheduleRepository.findById(scheduleId).orElseThrow(() -> new  ScheduleNotFoundException("Schedule Does not exist"));
+		
+		return null;
+	}
 
 }

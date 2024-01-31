@@ -176,18 +176,19 @@ public class SchoolServiceImpl implements SchoolService {
 	//=====================================DELETE OPERATION=============================
 
 	@Override
-	public ResponseEntity<ResponseStructure<String>> deleteSchoolById(int schoolId) {
+	public ResponseEntity<ResponseStructure<SchoolResponseDTO>> deleteSchoolById(int schoolId) {
 
 		School School=schoolRepository.findById(schoolId)
 				.orElseThrow(()->new SchoolNotFoundException("School Not Found"));
-		schoolRepository.deleteById(schoolId);
+		School.setDeleted(true);
+		schoolRepository.save(School);
 
-					ResponseStructure<String> responseStructure = new ResponseStructure();
+					ResponseStructure<SchoolResponseDTO> responseStructure = new ResponseStructure();
 					responseStructure.setStatusCode(HttpStatus.OK.value());
 					responseStructure.setMessage("school details Deleted successfully");
-					responseStructure.setData("School Object Deleted");
+					responseStructure.setData(mapToSchoolResponseDTO(School));
 
-					return new ResponseEntity<ResponseStructure<String>>(responseStructure,HttpStatus.OK);
+					return new ResponseEntity<ResponseStructure<SchoolResponseDTO>>(responseStructure,HttpStatus.OK);
 				}
 	
 

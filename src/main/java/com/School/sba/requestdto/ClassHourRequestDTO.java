@@ -14,7 +14,11 @@ import lombok.Setter;
 @Builder
 public class ClassHourRequestDTO {
 	
+	private int classHourId;
 	private  LocalTime beginsAt;
 	private  LocalTime endsAt;
+	private int subjectId;
+	private int userId;
+	private int roomNo;
 
 }

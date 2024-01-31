@@ -31,6 +31,7 @@ public class AcademicProgram {
 	private String programName;
 	private LocalTime beginsAt;
 	private LocalTime endsAt;
+	private boolean isDeleted=false;
 	
 	@ManyToOne
 	private School school;
@@ -40,6 +41,9 @@ public class AcademicProgram {
 	
 	@ManyToMany(mappedBy = "academicProgramList")
 	private List<User> userList;
+	
+	@OneToMany(mappedBy = "academicProgram")
+	private List<ClassHour> ClassHour ;
 	
 
 

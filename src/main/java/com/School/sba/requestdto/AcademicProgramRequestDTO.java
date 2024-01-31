@@ -25,5 +25,6 @@ public class AcademicProgramRequestDTO {
 	private LocalTime endsAt;
 	private School school;
 	private List<String> subjectList;
+	private List<String> teacherList;
 	
 }

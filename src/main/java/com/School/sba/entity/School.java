@@ -29,6 +29,7 @@ public class School {
 	private Long contactNo;
 	private String emailId;
 	private  String address;
+	private boolean isDeleted=false;
 	
 	@OneToOne
 	private Schedule schedule;

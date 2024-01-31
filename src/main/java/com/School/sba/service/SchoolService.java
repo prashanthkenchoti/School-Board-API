@@ -17,7 +17,7 @@ public interface SchoolService {
 
 	ResponseEntity<ResponseStructure<String>> updateSchoolById(School school, int schoolId);
 
-	ResponseEntity<ResponseStructure<String>> deleteSchoolById(int schoolId);
+	ResponseEntity<ResponseStructure<SchoolResponseDTO>> deleteSchoolById(int schoolId);
 
 	ResponseEntity<ResponseStructure<List<SchoolResponseDTO>>> findSchoolByName(String schoolName);
 

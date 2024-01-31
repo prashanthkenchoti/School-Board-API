@@ -114,7 +114,7 @@ public class UserServiceImpl implements UserService  {
 		{
 			User responseUser=user.get();
 			responseUser.setDeleted(true);
-			
+			userRepository.save(responseUser);
 			responseStructure.setStatusCode(HttpStatus.FOUND.value());
 			responseStructure.setMessage("User Deleted Successfully");
 			responseStructure.setData(mapToUserResponse(responseUser));

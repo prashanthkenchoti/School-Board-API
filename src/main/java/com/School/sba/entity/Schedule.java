@@ -1,14 +1,13 @@
 package com.School.sba.entity;
 
-import java.sql.Time;
-import java.time.Duration;
+
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,13 +20,13 @@ public class Schedule {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int scheduleId;
-	private LocalTime opensAt;
-	private LocalTime closesAt;
+	private LocalDateTime opensAt;
+	private LocalDateTime closesAt;
 	private int classHoursPerDay;
 	private int classHourLengthInMinute;
-	private LocalTime breakTime;
+	private LocalDateTime breakTime;
 	private int breakLengthInMinute;
-	private LocalTime lunchTime;
+	private LocalDateTime lunchTime;
 	private int lunchLengthInMinute;
 	
 	private School school;

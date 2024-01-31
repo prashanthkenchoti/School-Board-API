@@ -64,7 +64,7 @@ public class SchoolController {
 	// DELETE OPERATION
 	
 	@DeleteMapping("/schools/{schoolId}")
-	public ResponseEntity<ResponseStructure<String>> deleteSchoolById(@PathVariable int schoolId)
+	public ResponseEntity<ResponseStructure<SchoolResponseDTO>> deleteSchoolById(@PathVariable int schoolId)
 	{
 		return schoolService.deleteSchoolById(schoolId);
 	}
