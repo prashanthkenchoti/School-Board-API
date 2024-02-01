@@ -141,9 +141,8 @@ public class SubjectServiceImpl implements SubjectService {
 
 			if(user.getUserRole().equals(UserRole.TEACHER))
 			{
-				if(subject.getSubjectName().equals(subject))
-				{
-				subject.getUser().add(user);
+				user.setSubject(subject);
+				userRepository.save(user);
 				subjectRepository.save(subject);
 				structure.setStatusCode(HttpStatus.OK.value());
 				structure.setMessage("Subject is Found Successfully");
@@ -155,10 +154,7 @@ public class SubjectServiceImpl implements SubjectService {
 					throw new UnAuthorisedAccessException("User can Not Be Assigned With Subject");
 				}
 			}
-			else
-			{
-				throw new UnAuthorisedAccessException("User Not Allowed");
-			}
+			
 				
 	}
 
@@ -166,7 +162,7 @@ public class SubjectServiceImpl implements SubjectService {
 	
 
 
-}
+
 
 
 

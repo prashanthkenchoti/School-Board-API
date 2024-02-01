@@ -2,7 +2,9 @@ package com.School.sba.serviceImpl;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
+import java.time.DayOfWeek;
 import java.time.Duration;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,7 +86,10 @@ public class ClassHourServiceImpl implements  ClassHourService {
 					LocalDateTime lunchTimeEnd = lunchTimeStart.plusMinutes(schedule.getLunchLengthInMinute().toMinutes());
 					LocalDateTime breakTimeStart = LocalDateTime.now().with(schedule.getBreakTime());
 					LocalDateTime breakTimeEnd = breakTimeStart.plusMinutes(schedule.getBreakLengthInMinute().toMinutes());
+					LocalDateTime nextSaturday = LocalDateTime.now().with(TemporalAdjusters.next(DayOfWeek.SATURDAY)).plusDays(7);
 
+					 while (currentTime.isBefore(nextSaturday)&& currentTime.getDayOfWeek()!=DayOfWeek.SUNDAY )
+					 {
 					for (int day = 1; day <= 6; day++) {
 						for (int hour = 1; hour <= classHourPerDay + 2; hour++) {
 							ClassHour classHour = new ClassHour();
@@ -115,10 +120,10 @@ public class ClassHourServiceImpl implements  ClassHourService {
 						}
 						currentTime = currentTime.plusDays(1).with(schedule.getOpensAt());
 					}
+					 }
 
 				} else
-					throw new UserNotFoundException(
-							"The school does not contain any schedule, please provide a schedule to the school");
+					throw new ScheduleNotFoundException("The school does not contain any schedule, please provide a schedule to the school");
 
 				responseStructure.setData("ClassHour generated successfully for the academic progarm");
 				responseStructure.setMessage("Class Hour generated for the current week successfully");

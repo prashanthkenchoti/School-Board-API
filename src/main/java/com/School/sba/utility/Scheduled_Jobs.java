@@ -6,9 +6,6 @@ import org.springframework.stereotype.Component;
 
 import com.School.sba.service.SchoolService;
 import com.School.sba.service.UserService;
-import com.School.sba.serviceImpl.SchoolServiceImpl;
-import com.School.sba.serviceImpl.UserServiceImpl;
-
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
