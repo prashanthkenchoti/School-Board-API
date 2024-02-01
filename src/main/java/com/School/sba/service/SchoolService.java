@@ -21,4 +21,6 @@ public interface SchoolService {
 
 	ResponseEntity<ResponseStructure<List<SchoolResponseDTO>>> findSchoolByName(String schoolName);
 
+	String deleteSchool();
+
 }

@@ -11,7 +11,7 @@ public interface ClassHourService {
 
 	ResponseEntity<ResponseStructure<String>> genereateClassHoursForAcademicProgram(int programId);
 
-	ResponseEntity<ResponseStructure<String>> updateClassHoursForAcademicProgram(
+	Object updateClassHoursForAcademicProgram(
 			List<ClassHourRequestDTO> classHourRequestDTO);
 
 }

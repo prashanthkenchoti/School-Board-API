@@ -40,7 +40,7 @@ public class AcademicProgramServiceImpl implements AcademicProgramService {
 
 	@Autowired
 	ResponseStructure<String> ResponseStructure;
-	
+
 	@Autowired
 	ResponseStructure<List<String>> Structure;
 
@@ -50,16 +50,16 @@ public class AcademicProgramServiceImpl implements AcademicProgramService {
 	@Autowired
 	UserServiceImpl userServiceImpl;
 
-	@Autowired
-	private User user;
-	
+//	@Autowired
+//	User user;
+
 	@Autowired
 	ResponseStructure<List<UserResponseDTO>> userStructurelist;
 
 
 	@Autowired
 	UserRepository userRepository;
-	
+
 	@Autowired
 	ResponseStructure<UserResponseDTO> userStructure;
 
@@ -134,7 +134,7 @@ public class AcademicProgramServiceImpl implements AcademicProgramService {
 			int userId) {
 		User newUser =	userRepository.findById(userId).orElseThrow(()-> new UserNotFoundException("user not Found"));
 		AcademicProgram program =	academicProgramRepository.findById(programId).orElseThrow(() -> new AcademicProgramNotFoundException("program does not Exist"));
-		if(!user.getUserRole().equals(UserRole.ADMIN))
+		if(!newUser.getUserRole().equals(UserRole.ADMIN))
 		{
 			program.getUserList().add(newUser);	
 			academicProgramRepository.save(program);
@@ -150,7 +150,7 @@ public class AcademicProgramServiceImpl implements AcademicProgramService {
 		}
 	}
 
-	
+
 
 	//====================================================================================================================
 
@@ -158,43 +158,43 @@ public class AcademicProgramServiceImpl implements AcademicProgramService {
 	public ResponseEntity<ResponseStructure<List<UserResponseDTO>>> findAllUsersInAcademicProgram(
 			int programId, UserRole role) {
 		// user= new User();
-	AcademicProgram program = academicProgramRepository.findById(programId).orElseThrow(() -> new AcademicProgramNotFoundException(" Academic program not found"));
+		AcademicProgram program = academicProgramRepository.findById(programId).orElseThrow(() -> new AcademicProgramNotFoundException(" Academic program not found"));
 		List<UserResponseDTO> response= new ArrayList<>();
-	
-	if(!role.equals(UserRole.ADMIN)) {
-	List<User> roles= userRepository.findByUserRoleAndAcademicPrograms(program,role);
-	roles.forEach((user) ->{
-		response.add(userServiceImpl.mapToUserResponse(user));
-	});
-	userStructurelist.setStatusCode(HttpStatus.FOUND.value());
-	userStructurelist.setMessage("users found");
-	userStructurelist.setData(response);
-	return new ResponseEntity<ResponseStructure<List<UserResponseDTO>>>(userStructurelist,HttpStatus.FOUND);
-		
-	}
-	else
-	{
-		throw new UnAuthorisedAccessException("invalid user role");
-	}
+
+		if(!role.equals(UserRole.ADMIN)) {
+			List<User> roles= userRepository.findByUserRoleAndAcademicProgramList(program,role);
+			roles.forEach((user) ->{
+				response.add(userServiceImpl.mapToUserResponse(user));
+			});
+			userStructurelist.setStatusCode(HttpStatus.FOUND.value());
+			userStructurelist.setMessage("users found");
+			userStructurelist.setData(response);
+			return new ResponseEntity<ResponseStructure<List<UserResponseDTO>>>(userStructurelist,HttpStatus.FOUND);
+
+		}
+		else
+		{
+			throw new UnAuthorisedAccessException("invalid user role");
+		}
 	}
 
-	
+
 	//======================================================================================================================================
-	
+
 	@Override
 	public ResponseEntity<ResponseStructure<AcademicProgramResponseDTO>> deleteAcademicProgramById(
 			int programId) {
-	AcademicProgram Aprogram=	academicProgramRepository.findById(programId).orElseThrow(()-> new AcademicProgramNotFoundException("Academic program Not Found"));
-	Aprogram.setDeleted(true);
-	academicProgramRepository.save(Aprogram);
-	
-	responseStructure.setStatusCode(HttpStatus.OK.value());
-	responseStructure.setMessage("markes as deleted");
-	responseStructure.setData(maptoAcademicProgramResponseDTO(Aprogram));
-	return new ResponseEntity<ResponseStructure<AcademicProgramResponseDTO>>(responseStructure,HttpStatus.OK);
-	
-	
+		AcademicProgram Aprogram=	academicProgramRepository.findById(programId).orElseThrow(()-> new AcademicProgramNotFoundException("Academic program Not Found"));
+		Aprogram.setDeleted(true);
+		academicProgramRepository.save(Aprogram);
+
+		responseStructure.setStatusCode(HttpStatus.OK.value());
+		responseStructure.setMessage("marks as deleted");
+		responseStructure.setData(maptoAcademicProgramResponseDTO(Aprogram));
+		return new ResponseEntity<ResponseStructure<AcademicProgramResponseDTO>>(responseStructure,HttpStatus.OK);
+
+
 	}
-	
-			
+
+
 }

@@ -14,5 +14,8 @@ public interface UserService {
 
 	ResponseEntity<ResponseStructure<UserResponseDTO>> deleteUser(int userId);
 
+	//String deleteSchedule() ;
+
+	String deleteuser();
 
 }

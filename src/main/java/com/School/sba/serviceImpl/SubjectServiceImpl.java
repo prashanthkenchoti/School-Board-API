@@ -53,6 +53,9 @@ public class SubjectServiceImpl implements SubjectService {
     @Autowired
     private UserRepository userRepository;
     
+    @Autowired
+    private User user;
+    
     private SubjectResponseDTO mapToSubjectResponseDTO(Subject subject)
     {
     	return SubjectResponseDTO.builder()
@@ -156,7 +159,6 @@ public class SubjectServiceImpl implements SubjectService {
 			{
 				throw new UnAuthorisedAccessException("User Not Allowed");
 			}
-		
 				
 	}
 

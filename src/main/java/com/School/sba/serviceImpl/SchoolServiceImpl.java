@@ -12,8 +12,11 @@ import org.springframework.stereotype.Service;
 import com.School.sba.Enum.UserRole;
 import com.School.sba.Exception.SchoolNotFoundException;
 import com.School.sba.Exception.UserNotFoundException;
+import com.School.sba.Repository.AcademicProgramRepository;
+import com.School.sba.Repository.ClassHourRepository;
 import com.School.sba.Repository.SchoolReposiory;
 import com.School.sba.Repository.UserRepository;
+import com.School.sba.entity.AcademicProgram;
 import com.School.sba.entity.School;
 import com.School.sba.entity.User;
 import com.School.sba.requestdto.SchoolRequestDTO;
@@ -26,6 +29,15 @@ public class SchoolServiceImpl implements SchoolService {
 
 	@Autowired
 	SchoolReposiory schoolRepository;
+	
+	@Autowired
+	ClassHourRepository classHourRepository;
+	
+	@Autowired
+	UserRepository userRepo;
+	
+	@Autowired
+	AcademicProgramRepository  programRepository;
 	
 	@Autowired
 	UserRepository userRepository;
@@ -191,9 +203,31 @@ public class SchoolServiceImpl implements SchoolService {
 					return new ResponseEntity<ResponseStructure<SchoolResponseDTO>>(responseStructure,HttpStatus.OK);
 				}
 	
+	
+	
+	//===========================================================================================================================
 
-				
+	@Override
+	public String deleteSchool() {
+		List<School> schools = schoolRepository.findByIsDeleted(true);
+		schools.forEach((school) -> {
+			List<AcademicProgram> programs = school.getProgramList();
+			programs.forEach((program) -> {
+				classHourRepository.deleteAll(program.getClassHour());
+			});
+			programRepository.deleteAll(programs);
+			List<User> users = userRepo.findBySchool(school);
+			users.forEach((u) ->{
+				if (u.getUserRole().equals(UserRole.ADMIN)) {
+					users.remove(u);
+				}
+			});
+			userRepo.deleteAll(users);
+		});
+		schoolRepository.deleteAll(schools);
+		return "School Deleted";
 	}
+	
 
 
 
@@ -201,5 +235,5 @@ public class SchoolServiceImpl implements SchoolService {
 
 
 
-
+}
 

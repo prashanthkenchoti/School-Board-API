@@ -2,21 +2,28 @@ package com.School.sba.serviceImpl;
 
 import java.time.Duration;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import com.School.sba.Enum.UserRole;
 import com.School.sba.Exception.ScheduleExistsException;
 import com.School.sba.Exception.ScheduleNotFoundException;
 import com.School.sba.Exception.SchoolNotFoundException;
 import com.School.sba.Exception.UserNotFoundException;
+import com.School.sba.Repository.ClassHourRepository;
 import com.School.sba.Repository.ScheduleRepository;
 import com.School.sba.Repository.SchoolReposiory;
+import com.School.sba.Repository.UserRepository;
+import com.School.sba.entity.ClassHour;
 import com.School.sba.entity.Schedule;
 import com.School.sba.entity.School;
+import com.School.sba.entity.User;
 import com.School.sba.requestdto.ScheduleRequestDTO;
 import com.School.sba.requestdto.SchoolRequestDTO;
 import com.School.sba.responsedto.ScheduleResponseDTO;
@@ -31,6 +38,12 @@ public class ScheduleServiceImpl implements ScheduleService {
 	ScheduleRepository scheduleRepository;
 	@Autowired
 	SchoolReposiory schoolReposiory;
+	
+	@Autowired
+	UserRepository userRepository;
+	
+	@Autowired
+	ClassHourRepository classHourRepository;
 
 	@Autowired
 	ResponseStructure<ScheduleResponseDTO> responseStructure;
@@ -137,9 +150,17 @@ public class ScheduleServiceImpl implements ScheduleService {
 	public ResponseEntity<ResponseStructure<ScheduleResponseDTO>> deleteSchedule(Schedule schedule)
 	{
 		int scheduleId=schedule.getScheduleId();
-		scheduleRepository.findById(scheduleId).orElseThrow(() -> new  ScheduleNotFoundException("Schedule Does not exist"));
+	Schedule scheduleReturn =	scheduleRepository.findById(scheduleId).orElseThrow(() -> new  ScheduleNotFoundException("Schedule Does not exist"));
 		
-		return null;
+		scheduleRepository.delete(schedule);
+		responseStructure.setStatusCode(HttpStatus.OK.value());
+		responseStructure.setMessage("schedule is deleted for the school");
+		responseStructure.setData(mapToScheduleResponseDTO(scheduleReturn));
+		return new ResponseEntity<ResponseStructure<ScheduleResponseDTO>>(responseStructure,HttpStatus.OK);
 	}
 
+
+
 }
+
+

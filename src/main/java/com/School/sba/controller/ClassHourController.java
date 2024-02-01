@@ -29,7 +29,7 @@ public class ClassHourController {
 
 	
 	@PutMapping("/class-hours")
-	public ResponseEntity<ResponseStructure<String>> updateClassHoursForAcademicProgram(@RequestBody List<ClassHourRequestDTO> classHourRequestDTO)
+	public Object updateClassHoursForAcademicProgram(@RequestBody List<ClassHourRequestDTO> classHourRequestDTO)
 	{
 		return classHourService.updateClassHoursForAcademicProgram(classHourRequestDTO);
 	}

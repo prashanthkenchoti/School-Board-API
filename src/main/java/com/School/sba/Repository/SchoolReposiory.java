@@ -8,10 +8,13 @@ import org.springframework.stereotype.Repository;
 
 import com.School.sba.entity.School;
 
-@Repository
 public interface SchoolReposiory extends JpaRepository<School, Integer> {
 
 	@Query("select s from School s where s.schoolName LIKE %?1%")
 	List<School> findSchoolByName(String schoolName);
+
+	List<School> findByIsDeleted(boolean b);
+
+
 
 }

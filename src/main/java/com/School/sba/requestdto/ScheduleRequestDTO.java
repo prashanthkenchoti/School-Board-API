@@ -18,14 +18,14 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ScheduleRequestDTO {
 	
-	private LocalDateTime opensAt;
-	private LocalDateTime closesAt;
+	private LocalTime opensAt;
+	private LocalTime closesAt;
 	private int classHoursPerDay;
-	private int classHourLengthInMinute;
-	private LocalDateTime breakTime;
-	private int breakLengthInMinute;
-	private LocalDateTime lunchTime;
-	private int lunchLengthInMinute;
+	private Duration classHourLengthInMinute;
+	private LocalTime breakTime;
+	private Duration breakLengthInMinute;
+	private LocalTime lunchTime;
+	private Duration lunchLengthInMinute;
 	
 
 }

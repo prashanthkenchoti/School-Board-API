@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.School.sba.entity.Subject;
 import com.School.sba.requestdto.SubjectRequestDTO;
 
-@Repository
+
 public interface SubjectRepository extends JpaRepository<Subject, Integer> {
 	
 	@Query("select s from Subject s where s.subjectName LIKE %?1%")

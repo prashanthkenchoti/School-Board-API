@@ -39,7 +39,7 @@ public class AcademicProgram {
 	@ManyToMany
 	private List<Subject> subjectList;
 	
-	@ManyToMany(mappedBy = "academicProgramList")
+	@ManyToMany
 	private List<User> userList;
 	
 	@OneToMany(mappedBy = "academicProgram")

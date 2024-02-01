@@ -1,5 +1,6 @@
 package com.School.sba.serviceImpl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,9 @@ import org.springframework.stereotype.Service;
 import com.School.sba.Enum.UserRole;
 import com.School.sba.Exception.ConstraintVoilationException;
 import com.School.sba.Exception.UserNotFoundException;
+import com.School.sba.Repository.ClassHourRepository;
 import com.School.sba.Repository.UserRepository;
+import com.School.sba.entity.ClassHour;
 import com.School.sba.entity.User;
 import com.School.sba.requestdto.UserRequestDTO;
 import com.School.sba.responsedto.UserResponseDTO;
@@ -25,6 +28,9 @@ public class UserServiceImpl implements UserService  {
 
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	ClassHourRepository classHourRepository;
 	
 
 
@@ -65,7 +71,7 @@ public class UserServiceImpl implements UserService  {
  
 		catch(Exception ex)
 		{
-			throw new ConstraintVoilationException(HttpStatus.BAD_REQUEST.value(),"Duplicate entries Detected","please Use Unique entry ");
+			throw new ConstraintVoilationException("Duplicate entries Detected");
 		}
 	
 	}
@@ -126,7 +132,27 @@ public class UserServiceImpl implements UserService  {
 		}
 			
 		}
+@Override
+	public String deleteuser() {
+	
+	List<User> user = userRepository.findByIsDeleted(true);
+	user.forEach((u) -> {
+		if (!(u.getUserRole().equals(UserRole.ADMIN))) {
+			u.setDeleted(true);
+			u.setAcademicProgramList(null);
+			List<ClassHour> hours = classHourRepository.findByUser(u);
+			hours.forEach((ch)->{
+				ch.setUser(null);
+				classHourRepository.save(ch);
+			});
+			userRepository.save(u);
+			userRepository.delete(u);
+		}
+	});
+	System.out.println(user);
+	return "User Deleted Successfully";		
+	}
 
-			
+			//scheduled jobs
 		
 	}

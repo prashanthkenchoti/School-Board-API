@@ -11,8 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ConstraintVoilationException extends RuntimeException {
 	
-	private int StatusCode;
 	private String message;
-	private String rootCause;
 
 }

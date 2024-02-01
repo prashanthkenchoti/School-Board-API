@@ -8,17 +8,22 @@ import org.springframework.stereotype.Repository;
 
 import com.School.sba.Enum.UserRole;
 import com.School.sba.entity.AcademicProgram;
+import com.School.sba.entity.School;
 import com.School.sba.entity.User;
 
-@Repository
+
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-	List<User> findByUserRoleAndAcademicPrograms(AcademicProgram program, List<User> role);
 
-	List<User> findByUserRoleAndAcademicPrograms(AcademicProgram program, UserRole role);
+	List<User> findByUserRoleAndAcademicProgramList(AcademicProgram program, UserRole role);
+
+
+	List<User> findBySchool(School school);
+
+	List<User> findByIsDeleted(boolean b);
 
 	
+
 	
-	//void findUserRole(UserRole userRole);
 
 }

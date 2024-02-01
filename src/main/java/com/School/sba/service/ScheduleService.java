@@ -14,4 +14,6 @@ public interface ScheduleService {
 
 	ResponseEntity<ResponseStructure<ScheduleResponseDTO>> updateSchedule(ScheduleRequestDTO scheduleRequestDTO, int scheduleId);
 
+	
+
 }

@@ -31,6 +31,7 @@ public class School {
 	private  String address;
 	private boolean isDeleted=false;
 	
+	
 	@OneToOne
 	private Schedule schedule;
 	
