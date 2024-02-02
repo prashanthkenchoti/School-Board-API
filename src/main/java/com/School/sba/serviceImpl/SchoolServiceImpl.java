@@ -41,6 +41,7 @@ public class SchoolServiceImpl implements SchoolService {
 	
 	@Autowired
 	UserRepository userRepository;
+	
 	// method to convert SchoolRequestDTO type of object to School type of object
 	public School mapToSchool(SchoolRequestDTO  schoolRequsetDTO )
 	{

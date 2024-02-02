@@ -32,7 +32,7 @@ public class AcademicProgram {
 	private LocalTime beginsAt;
 	private LocalTime endsAt;
 	private boolean isDeleted=false;
-	
+	private boolean AutoRepetScheduled;
 	@ManyToOne
 	private School school;
 	
@@ -44,6 +44,11 @@ public class AcademicProgram {
 	
 	@OneToMany(mappedBy = "academicProgram")
 	private List<ClassHour> ClassHour ;
+
+	public boolean isAutoRepeat() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 
 

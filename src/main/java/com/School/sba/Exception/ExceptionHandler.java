@@ -93,15 +93,11 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
 		return responseStructure(HttpStatus.NOT_FOUND,classRoomNotFoundException.getMessage()," all clssrooms are already engaged ");
 	}
 	
-	@org.springframework.web.bind.annotation.ExceptionHandler(ClassRoomNotFoundException.class)
+	@org.springframework.web.bind.annotation.ExceptionHandler(ClassHourNotFoundException.class)
 	public ResponseEntity<Object> classHourNotFound(ClassHourNotFoundException classHourNotFoundException )
 	{
 		return responseStructure(HttpStatus.NOT_FOUND,classHourNotFoundException.getMessage()," class hour is not planned for the day ");
 	}
 	
-	@org.springframework.web.bind.annotation.ExceptionHandler(ClassRoomNotFoundException.class)
-	public ResponseEntity<Object> classHourNotFound(TeacherNotFoundException teacherNotFoundException )
-	{
-		return responseStructure(HttpStatus.NOT_FOUND,teacherNotFoundException.getMessage()," academic program does not assigned with any teachers ");
-	}
+	
 }

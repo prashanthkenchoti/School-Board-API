@@ -43,26 +43,24 @@ public class SubjectServiceImpl implements SubjectService {
 
 	@Autowired
 	private AcademicProgramServiceImpl  academicProgramServiceImpl;
-	
-    @Autowired
+
+	@Autowired
 	private ResponseStructure<List<SubjectResponseDTO>> ResponseStructure;
-	
-    @Autowired
-    private ResponseStructure<String> structure;
-    
-    @Autowired
-    private UserRepository userRepository;
-    
-    @Autowired
-    private User user;
-    
-    private SubjectResponseDTO mapToSubjectResponseDTO(Subject subject)
-    {
-    	return SubjectResponseDTO.builder()
-    			.subjectId(subject.getSubjectId())
-    			.subjectName(subject.getSubjectName())
-    			.build();
-    }
+
+	@Autowired
+	private ResponseStructure<String> structure;
+
+	@Autowired
+	private UserRepository userRepository;
+
+
+	private SubjectResponseDTO mapToSubjectResponseDTO(Subject subject)
+	{
+		return SubjectResponseDTO.builder()
+				.subjectId(subject.getSubjectId())
+				.subjectName(subject.getSubjectName())
+				.build();
+	}
 
 
 	@Override
@@ -139,27 +137,27 @@ public class SubjectServiceImpl implements SubjectService {
 		User user= userRepository.findById(userId).orElseThrow(()-> new UserNotFoundException("User Not Found"));
 		Subject subject = subjectRepository.findById(subjectId).orElseThrow(() -> new SubjectNotFoundException("Subject Not Exixt"));
 
-			if(user.getUserRole().equals(UserRole.TEACHER))
-			{
-				user.setSubject(subject);
-				userRepository.save(user);
-				subjectRepository.save(subject);
-				structure.setStatusCode(HttpStatus.OK.value());
-				structure.setMessage("Subject is Found Successfully");
-				structure.setData("subject is assigned to the given userId ");
-				return new ResponseEntity<ResponseStructure<String>>(structure,HttpStatus.OK);
-			}
-				else
-				{
-					throw new UnAuthorisedAccessException("User can Not Be Assigned With Subject");
-				}
-			}
-			
-				
+		if(user.getUserRole().equals(UserRole.TEACHER))
+		{
+			user.setSubject(subject);
+			userRepository.save(user);
+			subjectRepository.save(subject);
+			structure.setStatusCode(HttpStatus.OK.value());
+			structure.setMessage("Subject is Found Successfully");
+			structure.setData("subject is assigned to the given userId ");
+			return new ResponseEntity<ResponseStructure<String>>(structure,HttpStatus.OK);
+		}
+		else
+		{
+			throw new UnAuthorisedAccessException("User can Not Be Assigned With Subject");
+		}
 	}
 
 
-	
+}
+
+
+
 
 
 

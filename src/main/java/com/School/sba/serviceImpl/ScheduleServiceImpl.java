@@ -36,6 +36,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
 	@Autowired
 	ScheduleRepository scheduleRepository;
+	
 	@Autowired
 	SchoolReposiory schoolReposiory;
 	
@@ -81,14 +82,27 @@ public class ScheduleServiceImpl implements ScheduleService {
 				.build();
 
 	}
+	
+	private int givenLength(ScheduleRequestDTO scheduleRequestDTO)
+	{
+	int hoursPerDay=	scheduleRequestDTO.getClassHoursPerDay();
+	int classLength=(int) scheduleRequestDTO.getClassHourLengthInMinute().toMinutes();
+	int breaklength=(int) scheduleRequestDTO.getBreakLengthInMinute().toMinutes();
+	int lunchLength=scheduleRequestDTO.getLunchLengthInMinute().toMinutesPart();
+	
+	int totalLength=(hoursPerDay*classLength)+breaklength+lunchLength;
+	return totalLength;
+	}
 
 
 	@Override
 	public ResponseEntity<ResponseStructure<ScheduleResponseDTO>> createSchedule(ScheduleRequestDTO scheduleRequestDTO,int schoolId) {
 		return schoolReposiory.findById(schoolId).map(school -> {
 			if(school.getSchedule()==null)
-			{
+			{	
+				
 				Schedule schedule=mapToSchedule(scheduleRequestDTO);
+				
 				schedule = scheduleRepository.save(schedule);
 				school.setSchedule(schedule);
 				schoolReposiory.save(school);
@@ -97,6 +111,8 @@ public class ScheduleServiceImpl implements ScheduleService {
 				responseStructure.setData(mapToScheduleResponseDTO(schedule));
 				return new ResponseEntity<ResponseStructure<ScheduleResponseDTO>>(responseStructure,HttpStatus.CREATED);
 			}
+			
+			
 			else {
 				throw new ScheduleExistsException("More than one Schedule can not be Accepted");
 			}

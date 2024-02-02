@@ -2,7 +2,6 @@ package com.School.sba.serviceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +17,6 @@ import com.School.sba.Repository.AcademicProgramRepository;
 import com.School.sba.Repository.SchoolReposiory;
 import com.School.sba.Repository.UserRepository;
 import com.School.sba.entity.AcademicProgram;
-import com.School.sba.entity.Subject;
 import com.School.sba.entity.User;
 import com.School.sba.requestdto.AcademicProgramRequestDTO;
 import com.School.sba.responsedto.AcademicProgramResponseDTO;
@@ -30,7 +28,7 @@ import com.School.sba.utility.ResponseStructure;
 public class AcademicProgramServiceImpl implements AcademicProgramService {
 
 	@Autowired
-	private AcademicProgramRepository academicProgramRepository;
+	AcademicProgramRepository academicProgramRepository;
 
 	@Autowired
 	SchoolReposiory schoolRepository;
@@ -49,9 +47,6 @@ public class AcademicProgramServiceImpl implements AcademicProgramService {
 
 	@Autowired
 	UserServiceImpl userServiceImpl;
-
-//	@Autowired
-//	User user;
 
 	@Autowired
 	ResponseStructure<List<UserResponseDTO>> userStructurelist;
@@ -157,7 +152,6 @@ public class AcademicProgramServiceImpl implements AcademicProgramService {
 	@Override
 	public ResponseEntity<ResponseStructure<List<UserResponseDTO>>> findAllUsersInAcademicProgram(
 			int programId, UserRole role) {
-		// user= new User();
 		AcademicProgram program = academicProgramRepository.findById(programId).orElseThrow(() -> new AcademicProgramNotFoundException(" Academic program not found"));
 		List<UserResponseDTO> response= new ArrayList<>();
 

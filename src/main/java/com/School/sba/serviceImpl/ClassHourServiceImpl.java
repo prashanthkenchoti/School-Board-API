@@ -10,6 +10,7 @@ import java.time.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.School.sba.Enum.ClassStatus;
@@ -25,6 +26,7 @@ import com.School.sba.Repository.AcademicProgramRepository;
 import com.School.sba.Repository.ClassHourRepository;
 import com.School.sba.Repository.SubjectRepository;
 import com.School.sba.Repository.UserRepository;
+import com.School.sba.entity.AcademicProgram;
 import com.School.sba.entity.ClassHour;
 import com.School.sba.entity.Schedule;
 import com.School.sba.entity.School;
@@ -53,6 +55,9 @@ public class ClassHourServiceImpl implements  ClassHourService {
 	
 	@Autowired
 	private ResponseStructure<String> responseStructure;
+	
+	@Autowired
+	ResponseStructure<List<ClassHour>> hourStructure;
 	
 	
 	private boolean isBreakTime(LocalDateTime beginsAt, LocalDateTime endsAt, Schedule schedule) {
@@ -135,12 +140,13 @@ public class ClassHourServiceImpl implements  ClassHourService {
 		
 			}
 
-
+	//================================================================================================
+	
 
 	
 
 	@Override
-	public Object updateClassHoursForAcademicProgram(List<ClassHourRequestDTO> classHourRequestDTO) {
+	public String updateClassHoursForAcademicProgram(List<ClassHourRequestDTO> classHourRequestDTO) {
 		classHourRequestDTO.forEach((req) -> {
 					int userId = req.getUserId();
 					User user = userRepository.findById(userId)
@@ -168,18 +174,47 @@ public class ClassHourServiceImpl implements  ClassHourService {
 				});
 				return "ClassHour updated";
 			
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<List<ClassHour>>> craeteClassHoursForNextWeek(int programId) {
+		
+		AcademicProgram academicProgram = academicProgramRepository.findById(programId).get();
+		List<ClassHour> classHours = academicProgram.getClassHour();
+		classHours.forEach((cl) -> {
+			// createNewClassHour(ClassHour classHour) is down side we created
+			ClassHour createNewClassHour = createNewClassHour(cl);
+			classHours.add(createNewClassHour);
+		});
+
+		classHours.forEach((hour) -> {
+			LocalDateTime plusDays = hour.getBeginsAt().plusDays(7);
+			hour.setBeginsAt(plusDays);
+			classHourRepository.save(hour);
+		});
+		hourStructure.setMessage("New Class Hour Created For Next Week");
+		hourStructure.setStatusCode(HttpStatus.CREATED.value());
+		hourStructure.setData(classHours);
+		return new ResponseEntity<ResponseStructure<List<ClassHour>>>(hourStructure, HttpStatus.CREATED);	
+		
+		
+		
+	}
+
+	private ClassHour createNewClassHour(ClassHour cl) {
+		ClassHour classHour2 = new ClassHour();
+
+		classHour2.setAcademicProgram(cl.getAcademicProgram());
+		classHour2.setBeginsAt(cl.getBeginsAt());
+		classHour2.setClassStatus(cl.getClassStatus());
+		classHour2.setEndsAt(cl.getEndsAt());
+		classHour2.setRoomNo(cl.getRoomNo());
+		classHour2.setSubject(cl.getSubject());
+		classHour2.setUser(cl.getUser());
+
+		return classHour2;
 	}	
 
-		
-	//=======================================================================================================================================
-				
-//	public ResponseEntity<ResponseStructure<ClassHourResponseDTO>> deleteClassHour(List<ClassHour> classHours)
-//	{
-//		int scheduleId=schedule.getScheduleId();
-//	scheduleRepository.findById(scheduleId).orElseThrow(() -> new  ScheduleNotFoundException("Schedule Does not exist"));
-//		
-//		return null;
-//	}	
 			
 
 	
