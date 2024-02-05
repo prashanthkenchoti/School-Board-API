@@ -29,7 +29,7 @@ public class Scheduled_Jobs {
 	AcademicProgramRepository academicProgramRepository;
 
 
-	@Scheduled(fixedDelay = 1000l)// fixed delay accepts values in mili seconds (datatype is long so add l at the end) 
+	@Scheduled(fixedDelay = 100000l)// fixed delay accepts values in mili seconds (datatype is long so add l at the end) 
 	public void delete()
 	{
 

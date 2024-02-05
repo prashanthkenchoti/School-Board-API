@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import com.School.sba.Enum.UserRole;
+import com.School.sba.Exception.ConstraintVoilationException;
 import com.School.sba.Exception.ScheduleExistsException;
 import com.School.sba.Exception.ScheduleNotFoundException;
 import com.School.sba.Exception.SchoolNotFoundException;
@@ -85,7 +86,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 	
 	private int givenLength(ScheduleRequestDTO scheduleRequestDTO)
 	{
-	int hoursPerDay=	scheduleRequestDTO.getClassHoursPerDay();
+	int  hoursPerDay=	scheduleRequestDTO.getClassHoursPerDay();
 	int classLength=(int) scheduleRequestDTO.getClassHourLengthInMinute().toMinutes();
 	int breaklength=(int) scheduleRequestDTO.getBreakLengthInMinute().toMinutes();
 	int lunchLength=scheduleRequestDTO.getLunchLengthInMinute().toMinutesPart();
@@ -117,7 +118,8 @@ public class ScheduleServiceImpl implements ScheduleService {
 				throw new ScheduleExistsException("More than one Schedule can not be Accepted");
 			}
 		}).orElseThrow(()-> new SchoolNotFoundException("No such school Exists") );
-
+			
+		
 	}
 
 	//================================================================================================================================
