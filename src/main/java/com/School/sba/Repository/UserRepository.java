@@ -1,6 +1,7 @@
 package com.School.sba.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,6 +22,10 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	List<User> findBySchool(School school);
 
 	List<User> findByIsDeleted(boolean b);
+
+// Spring security method
+	@Query("From User u where u.userName LIKE %?1%")
+	Optional<User> findByUserName(String username);
 
 	
 

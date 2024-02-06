@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.School.sba.entity.ClassHour;
 import com.School.sba.requestdto.ClassHourRequestDTO;
 import com.School.sba.requestdto.ExcelRequestDTO;
 import com.School.sba.service.ClassHourService;
@@ -31,7 +32,7 @@ public class ClassHourController {
 	{
 		return classHourService.genereateClassHoursForAcademicProgram(programId);
 	}
-
+	
 	
 	@PutMapping("/class-hours")
 	public Object updateClassHoursForAcademicProgram(@RequestBody List<ClassHourRequestDTO> classHourRequestDTO)
